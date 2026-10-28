@@ -1,11 +1,20 @@
 import numpy as np
 
 def comp_mse(y, tx, w):
-    return 1/2 * np.mean(np.sum((y - tx @ w) ** 2))
+    """Calculate the mse.
+    Args:
+        y: numpy array of shape (N,), N is the number of samples.
+        tx: numpy array of shape (N,D), D is the number of features.
+        w: numpy array of shape(D,)
+
+    Returns:
+        Scalar
+    """
+    return 1/2 * np.mean((y - tx @ w) ** 2)
 
 def comp_gradient(y, tx, w):
     err = y - tx.dot(w)
-    grad = -(tx @ err) / len(err)
+    grad = -(tx.T @ err) / len(err)
     return grad, err
 
 def sigmoid(t):
@@ -13,28 +22,39 @@ def sigmoid(t):
 
 def mean_squared_error_gd(y, tx, initial_w, max_iters, gamma):
     loss = 0.0
-    w = initial_w
+    w = initial_w.copy()
     for _ in range(max_iters):
-        grad, err = comp_gradient(y, tx, w)
-        loss = comp_mse(err)
-        w = w - gamma * grad
-    return w, loss
-
-def mean_squared_error_sgd(y, tx, initial_w, max_iters, gamma):
-    # currently does not pick feature to traverse
-    w = initial_w
-    loss = 0.0
-
-    for n_iter in range(max_iters):
         grad, _ = comp_gradient(y, tx, w)
         w = w - gamma * grad
         loss = comp_mse(y, tx, w)
+    return w, loss
+
+def mean_squared_error_sgd(y, tx, initial_w, max_iters, gamma):
+    N = tx.shape[0]
+
+    # Sampling with replacement
+    rng = np.random.default_rng(seed=12345)
+
+    w = initial_w.copy()
+    loss = 0.0
+
+    batch_size = 1
+
+    for n_iter in range(max_iters):
+        index = int(rng.integers(low=0, high=N))
+        tx_batch = tx[index:index+1]
+        y_batch = y[index:index+1]
+
+        grad, _ = comp_gradient(y_batch, tx_batch, w)
+        w = w - gamma * grad
+
+    loss = comp_mse(y, tx, w)
 
     return w, loss
 
 def least_squares(y, tx):
-    a = tx @ tx
-    b = tx @ y
+    a = tx.T @ tx
+    b = tx.T @ y
     w = np.linalg.solve(a, b)
     mse = comp_mse(y, tx, w)
     return w, mse
@@ -43,8 +63,8 @@ def ridge_regression(y, tx, lambda_):
     N = tx.shape[0]
     D = tx.shape[1]
     aI = 2 * N * lambda_ * np.identity(D)
-    a = tx @ tx + aI
-    b = tx @ y
+    a = tx.T @ tx + aI
+    b = tx.T @ y
     w = np.linalg.solve(a, b)
     mse = comp_mse(y, tx, w)
     return w, mse
@@ -52,7 +72,7 @@ def ridge_regression(y, tx, lambda_):
 def logistic_regression(y, tx, initial_w, max_iters, gamma):
     threshold = 1e-8
 
-    w = initial_w
+    w = initial_w.copy()
     losses = []
     for iter in range(max_iters):
         pred = sigmoid(tx.dot(w))
@@ -70,7 +90,7 @@ def logistic_regression(y, tx, initial_w, max_iters, gamma):
 def reg_logistic_regression(y, tx, lambda_, initial_w, max_iters, gamma):
     threshold = 1e-8
     
-    w = initial_w
+    w = initial_w.copy()
     losses = []
     for iter in range(max_iters):
         pred = sigmoid(tx.dot(w))
