@@ -51,10 +51,10 @@ def log_loss(y, tx, w):
         Returns:
             A tuple containing the predicted values and the loss at w.
     """
-    pred = sigmoid(tx.dot(w))
-    loss = y.T.dot(np.log(pred)) + (1 - y).T.dot(np.log(1 - pred))
-    loss = np.squeeze(-loss).item() * (1 / y.shape[0])
-
+    z = tx.dot(w)
+    pred = sigmoid(z)
+    loss = np.mean(np.logaddexp(0, z) - y * z)
+    
     return pred, loss
 
 
@@ -211,3 +211,24 @@ def reg_logistic_regression(y, tx, lambda_, initial_w, max_iters, gamma):
     _, loss = log_loss(y, tx, w)
     
     return w, loss
+
+def standardize(tx, tx_other=None):
+    """Standardize the columns of tx and drop constant columns.
+
+        Args:
+            tx: numpy array of shape (N,D), used to compute mean and std.
+            tx_other: optional numpy array of shape (M,D), standardized with the statistics of tx.
+
+        Returns:
+            The standardized tx of shape (N,D'), or a tuple (tx, tx_other) if tx_other is given.
+            D' <= D since columns with zero variance in tx are dropped.
+    """
+    mean = np.mean(tx, axis=0)
+    std = np.std(tx, axis=0)
+    keep = std > 0
+    tx = (tx[:, keep] - mean[keep]) / std[keep]
+    if tx_other is None:
+        return tx
+
+    tx_other = (tx_other[:, keep] - mean[keep]) / std[keep]
+    return tx, tx_other
