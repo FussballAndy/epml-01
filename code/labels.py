@@ -358,7 +358,7 @@ column_specs = {
     "COLGHOUS": DROP, # constant
     "STATERES": DROP, # constant
     "CELLFON3": NUM,
-    "LADULT": DROP, # almost always missing
+    "LADULT": NUM,
     "NUMADULT": NUM,
     "NUMMEN": NUM,
     "NUMWOMEN": NUM,
@@ -438,10 +438,10 @@ column_specs = {
     "VEGETAB1": DROP,
     # Exercise: rate/time encoded, cleaned versions are PAFREQ*_, PADUR*_ and STRFREQ_
     "EXERANY2": NUM_79,
-    "EXRACT11": DROP, # activity type, ~75 categories
+    "EXRACT11": CAT, # activity type, ~75 categories
     "EXEROFT1": DROP,
     "EXERHMM1": DROP,
-    "EXRACT21": DROP,
+    "EXRACT21": CAT,
     "EXEROFT2": DROP,
     "EXERHMM2": DROP,
     "STRENGTH": DROP,
@@ -452,11 +452,11 @@ column_specs = {
     "JOINPAIN": NUM_7799,
     "SEATBELT": CAT_79, # 8 = never drive
     "FLUSHOT6": NUM_79,
-    "FLSHTMY2": DROP, # date MMYYYY
+    "FLSHTMY2": {"type": "numeric", "missing": [777777, 999999]}, # date MMYYYY
     "IMFVPLAC": CAT_7799,
     "PNEUVAC3": NUM_79,
     "HIVTST6": NUM_79,
-    "HIVTSTD3": DROP, # date MMYYYY
+    "HIVTSTD3": {"type": "numeric", "missing": [777777, 999999]}, # date MMYYYY
     "WHRTST10": CAT_7799,
     # Pre-diabetes and diabetes module
     "PDIABTST": NUM_79,
@@ -481,15 +481,15 @@ column_specs = {
     "CRGVMST2": CAT_79,
     "CRGVEXPT": NUM_79,
     # Visual impairment module: answered by ~1%
-    "VIDFCLT2": DROP,
-    "VIREDIF3": DROP,
-    "VIPRFVS2": DROP,
-    "VINOCRE2": DROP,
-    "VIEYEXM2": DROP,
-    "VIINSUR2": DROP,
-    "VICTRCT4": DROP,
-    "VIGLUMA2": DROP,
-    "VIMACDG2": DROP,
+    "VIDFCLT2": NUM,
+    "VIREDIF3": NUM,
+    "VIPRFVS2": NUM_9,
+    "VINOCRE2": NUM_7799,
+    "VIEYEXM2": NUM_9,
+    "VIINSUR2": {"type": "numeric", "missing": [7,9], "zero": [8]},
+    "VICTRCT4": NUM_79,
+    "VIGLUMA2": NUM_79,
+    "VIMACDG2": NUM_79,
     # Cognitive decline module
     "CIMEMLOS": NUM_79,
     "CDHOUSE": NUM_79,
@@ -502,16 +502,16 @@ column_specs = {
     "LONGWTCH": {"type": "numeric", "missing": [777, 999], "zero": [555], "units": IN_DAYS},
     "DRADVISE": NUM_79,
     # Adult asthma history module: answered by <0.5%
-    "ASTHMAGE": DROP,
-    "ASATTACK": DROP,
-    "ASERVIST": DROP,
-    "ASDRVIST": DROP,
-    "ASRCHKUP": DROP,
-    "ASACTLIM": DROP,
-    "ASYMPTOM": DROP,
-    "ASNOSLEP": DROP,
-    "ASTHMED3": DROP,
-    "ASINHALR": DROP,
+    "ASTHMAGE": {"type": "numeric", "missing": [98, 99], "zero": [97]},
+    "ASATTACK": NUM_79,
+    "ASERVIST": {"type": "numeric", "missing": [98], "zero": [88]},
+    "ASDRVIST": {"type": "numeric", "missing": [98], "zero": [88]},
+    "ASRCHKUP": {"type": "numeric", "missing": [98, 99], "zero": [88]},
+    "ASACTLIM": {"type": "numeric", "missing": [777, 999], "zero": [888]},
+    "ASYMPTOM": {"type": "numeric", "missing": [7, 9], "zero": [8]},
+    "ASNOSLEP": {"type": "numeric", "missing": [7, 9], "zero": [8]},
+    "ASTHMED3": {"type": "numeric", "missing": [7, 9], "zero": [8]},
+    "ASINHALR": {"type": "numeric", "missing": [7, 9], "zero": [8]},
     # Cardiovascular health and aspirin modules
     "HAREHAB1": NUM_79,
     "STREHAB1": NUM_79,
@@ -552,7 +552,7 @@ column_specs = {
     "PSATIME": NUM_79,
     "PCPSARS1": CAT_79,
     "PCPSADE1": CAT_9,
-    "PCDMDECN": DROP, # multiple choice answers concatenated into one number
+    "PCDMDECN": CAT_79, # multiple choice answers concatenated into one number
     # Social context module
     "SCNTMNY1": CAT_79, # 8 = not applicable
     "SCNTMEL1": CAT_79,

@@ -1,0 +1,43 @@
+# Metadata:
+- FMONTH
+- IDATE
+- IMONTH
+- IDAY
+- IYEAR
+- SEQNO
+- _PSU
+- QSTVER
+- _STSTR
+- _STRWT
+- _RAWRAKE
+- _WT2RAKE
+- _CRACE1
+- _CPRACE
+- _CLLCPWT
+- _DUALCOR
+- _LLCPWT
+
+# Constant/Based on other question:
+- CTELENUM
+- COLGHOUS
+- STATERES
+- CTELNUM1
+- CELLFON2
+- CCLGHOUS
+
+# Mixed encodings/Cleaner representation elsewhere
+- WEIGHT2
+- HEIGHT3
+- ALCDAY5
+- FRUITJU1
+- FRUIT1
+- FVBEANS
+- FVGREEN
+- FVORANG
+- VEGETAB1
+- EXEROFT1
+- EXERHMM1
+- EXEROFT2
+- EXERHMM2
+- STRENGTH
+- HTIN4

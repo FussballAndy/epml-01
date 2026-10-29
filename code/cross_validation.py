@@ -1,6 +1,6 @@
 import numpy as np
 
-from config import FOLDS, MAX_ITERS, GAMMA, SEED, PREPROCESSING
+from config import FOLDS, MAX_ITERS, GAMMA, SEED, PREPROCESSING, THRESHOLD
 from helpers import load_csv_data
 from implementations import logistic_regression, log_loss, sigmoid
 from evaluation_metrics import binary_evaluation
@@ -31,7 +31,7 @@ def cross_validation(y, x, categorical, k_indices, k):
     w, loss_tr = logistic_regression(y_tr, tx_tr, initial_w, MAX_ITERS, GAMMA)
     _, loss_te = log_loss(y_te, tx_te, w)
 
-    y_pred = (sigmoid(tx_te @ w) >= 0.5).astype(int)
+    y_pred = (sigmoid(tx_te @ w) >= THRESHOLD).astype(int)
     return loss_tr, loss_te, binary_evaluation(y_te, y_pred)
 
 

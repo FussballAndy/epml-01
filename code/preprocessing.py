@@ -4,10 +4,8 @@ from implementations import standardize
 
 
 def recode(x, labels, specs):
-    """Apply the codebook: replace special codes, decode rate encoded columns and drop unused columns.
-
-    This only depends on the codebook and not on the data, so it can be applied once to the whole
-    dataset before splitting into folds.
+    """
+    Modifies the dataset by replacing special codes, decoding rates from the codebook and removing unsued columns.
 
     Args:
         x: numpy array of shape (N, D) with the raw features
